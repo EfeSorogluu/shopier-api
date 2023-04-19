@@ -10,7 +10,7 @@ npm install shopier-api
 ```javascript
 import Shopier from 'shopier-api'
 
-const shopier = new Shopier('apiKey', 'apiSecret')
+const shopier = new Shopier('apiKey', 'apiSecret', 'TRY')
 ```
 
 #### Set the buyer's information.
