@@ -3,12 +3,12 @@ import crypto from 'crypto-js'
 export default class Shopier {
   paymentUrl = 'https://www.shopier.com/ShowProduct/api_pay4.php'
   buyer = {}
-  currency = 'TRY'
   moduleVersion = '1.0.4'
 
-  constructor(apiKey, apiSecret) {
-    this.apiKey = apiKey
-    this.apiSecret = apiSecret
+  constructor(apiKey, apiSecret, currency) {
+    this.apiKey = apiKey;
+    this.apiSecret = apiSecret;
+    this.currency = currency;
   }
 
   setBuyer(fields) {
@@ -150,7 +150,7 @@ export default class Shopier {
   }
 
   #getCurrency() {
-    return 'TRY'
+    return this.currency;
   }
 
   #lang() {
