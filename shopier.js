@@ -1,24 +1,75 @@
 import crypto from 'crypto-js'
-
+  /**
+   * API for Shopier payment service
+   * @class 
+   * @classdesc You can get payments with this package
+   * @module Shopier
+   * 
+   */  
+  
 export default class Shopier {
+   
   paymentUrl = 'https://www.shopier.com/ShowProduct/api_pay4.php'
   buyer = {}
   moduleVersion = '1.0.4'
 
-  constructor(apiKey, apiSecret, currency) {
+  constructor(apiKey,apiSecret, currency) {
     this.apiKey = apiKey;
+    
     this.apiSecret = apiSecret;
+    
     this.currency = currency;
   }
 
+  /**
+   * 
+   * @example
+   * 
+   * shopier.setBuyer({
+      id: '010101',
+      product_name: 'Balance',
+      first_name: 'Fatih',
+      last_name: 'Akdoğan',
+      email: 'mail@mail.com',
+      phone: '05555555555'
+    });
+   * 
+   * @description Set the buyer's information.
+   * 
+   */
   setBuyer(fields) {
     this.#buyerValidateAndLoad(this.#buyerFields(), fields)
   }
 
+  /**
+   * 
+   * @example
+   * 
+   * shopier.setOrderBilling({
+      billing_address: 'Kennedy Caddesi No:2592',
+      billing_city: 'Istanbul',
+      billing_country: 'Türkiye',
+      billing_postcode: '34000'
+    });
+   * 
+   * @description Set buyer's billing address.
+   */
+
+   
   setOrderBilling(fields) {
     this.#buyerValidateAndLoad(this.#orderBillingFields(), fields)
   }
 
+  /**
+   * @example
+   * shopier.setOrderShipping({
+      shipping_address: 'Kennedy Caddesi No:2592',
+      shipping_city: 'Istanbul',
+      shipping_country: 'Türkiye',
+      shipping_postcode: '34000'
+    });
+   * @description Set buyer's shipping address.
+   */ 
   setOrderShipping(fields) {
     this.#buyerValidateAndLoad(this.#orderShippingFields(), fields)
   }
@@ -127,6 +178,16 @@ export default class Shopier {
     return this.#recursiveHtmlStringGenerator(obj)
   }
 
+  /**
+   * 
+   * @param {Number} amount 
+   * @returns This will return the purchase form as html.
+   * 
+   * @example
+   * const paymentPage = shopier.payment(15) // For 15₺/$/€
+   * 
+   */
+
   payment(amount) {
     const form = this.#generateForm(amount)
     return `<!doctype html>
@@ -162,14 +223,23 @@ export default class Shopier {
     return current_lan
   }
 
-  callback(body, apiSecret) {
+  /**
+   * 
+   * @param {String} body 
+   * @returns `{ order_id: 10592, payment_id: 413449826, installment: 0 }`
+   * 
+   * @example
+   * 
+   * app.post('/shopier-notify', (req, res) => {
+   *    const callback = shopier.callback(req.body)
+   * })
+   */
+  callback(body) {
     const data = body.random_nr + body.platform_order_id
     const signature = crypto.enc.Base64.parse(body.signature).toString()
-    const expected = crypto.HmacSHA256(data, apiSecret).toString()
-    console.log(signature, expected)
+    const expected = crypto.HmacSHA256(data, this.apiSecret).toString()
     if (signature === expected) {
       if (body.status == 'success') {
-        console.log('başarılı')
         return {
           order_id: body.platform_order_id,
           payment_id: body.payment_id,

@@ -2,7 +2,7 @@
 
 ## Usage:
 ```bash
-npm install shopier-api
+npm install @efesoroglu/shopier-api
 ```
 
 #### Create an instance of the Shopier class.
@@ -47,9 +47,9 @@ shopier.setOrderShipping({
 ```
 
 #### How much will the customer pay?
-#### For 15₺:
+#### For 15₺/$/€:
 ```javascript
-const paymentPage = shopier.payment(15)
+const paymentPage = shopier.payment(15);
 ```
 > This will return the purchase form as html.
 
@@ -58,19 +58,22 @@ const paymentPage = shopier.payment(15)
 #### If we give an example for Express JS:
 ```javascript
 app.get('/pay', (req, res) => {
-    res.end(paymentPage)
-})
+    res.end(paymentPage);
+});
 ```
 
 > Now that we have render the html, a callback will be required after checkout.
 
 ```javascript
 app.post('/shopier-notify', (req, res) => {
-const callback = shopier.callback(req.body, "apiSecret")
-})
+const callback = shopier.callback(req.body);
+});
 ```
 
 #### If payment was successful, it will return order_id, payment_id, installment.
 ```
 { order_id: 10592, payment_id: 413449826, installment: 0 }
 ```
+
+
+> Forked from https://github.com/0x178F/shopier-api
