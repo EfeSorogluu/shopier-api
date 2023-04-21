@@ -241,12 +241,13 @@ export default class Shopier {
     if (signature === expected) {
       if (body.status == 'success') {
         return {
+          success: true,
           order_id: body.platform_order_id,
           payment_id: body.payment_id,
           installment: body.installment
         }
       } else {
-        return false
+        return { success: false, message: "Payment not completed successfuly." };
       }
     } else {
       throw new Error('Signature is not valid.')

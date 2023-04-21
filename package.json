@@ -1,6 +1,6 @@
 {
   "name": "@efesoroglu/shopier-api",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Shopier Payment Api",
   "type": "module",
   "main": "shopier.js",
