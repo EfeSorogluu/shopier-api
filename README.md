@@ -65,14 +65,19 @@ app.get('/pay', (req, res) => {
 > Now that we have render the html, a callback will be required after checkout.
 
 ```javascript
-app.post('/shopier-notify', (req, res) => {
-const callback = shopier.callback(req.body);
+app.post('/payment/shopier/callback', (req, res) => {
+    const callback = shopier.callback(req.body);
 });
 ```
 
-#### If payment was successful, it will return order_id, payment_id, installment.
+#### If payment was successful, it will return success, order_id, payment_id, installment.
 ```
-{ order_id: 10592, payment_id: 413449826, installment: 0 }
+{ success: true, order_id: 10592, payment_id: 413449826, installment: 0 }
+```
+
+#### If payment was not successful, it will return success, message.
+```
+{ success: false, message: "Payment not completed successfuly." }
 ```
 
 

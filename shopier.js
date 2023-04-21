@@ -226,11 +226,10 @@ export default class Shopier {
   /**
    * 
    * @param {String} body 
-   * @returns `{ order_id: 10592, payment_id: 413449826, installment: 0 }`
-   * 
+   * @returns `{ success: true, order_id: 10592, payment_id: 413449826, installment: 0 }
    * @example
    * 
-   * app.post('/shopier-notify', (req, res) => {
+   * app.post('/payment/shopier/callback', (req, res) => {
    *    const callback = shopier.callback(req.body)
    * })
    */
@@ -247,6 +246,11 @@ export default class Shopier {
           installment: body.installment
         }
       } else {
+        /**
+         * 
+         * @returns `{ success: false, message: "Payment not completed successfuly." }`
+         * 
+         */
         return { success: false, message: "Payment not completed successfuly." };
       }
     } else {
